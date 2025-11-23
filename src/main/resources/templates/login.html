@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Sign in</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2rem; }
+        form { max-width: 320px; display: grid; gap: .75rem; }
+        label { display: grid; gap: .25rem; }
+        input { padding: .5rem; font-size: 1rem; }
+        button { padding: .6rem 1rem; font-size: 1rem; }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="robots" content="noindex" />
+    <meta name="color-scheme" content="light dark" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'" />
+    <meta name="referrer" content="no-referrer" />
+</head>
+<body>
+<h2>Sign in</h2>
+<form th:action="@{/login}" method="post">
+    <label>Username
+        <input type="text" name="username" autocomplete="username" />
+    </label>
+    <label>Password
+        <input type="password" name="password" autocomplete="current-password" />
+    </label>
+    <button type="submit">Login</button>
+    <div th:if="${param.error}">Invalid username or password</div>
+    <div th:if="${param.logout}">You have been logged out</div>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+  </form>
+</body>
+</html>
