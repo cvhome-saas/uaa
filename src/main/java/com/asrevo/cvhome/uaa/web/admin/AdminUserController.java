@@ -16,7 +16,7 @@ record UpdateUserRequest(@Email String email, String password, String status) {}
 record UserDto(UUID id, String username, String email, Set<String> roles) {}
 
 @RestController
-@RequestMapping("/admin/users")
+@RequestMapping("/api/v1/admin/users")
 public class AdminUserController {
     private final AdminService adminService;
 

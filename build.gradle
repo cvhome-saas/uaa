@@ -62,3 +62,24 @@ dependencyManagement {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+node {
+    version = '20.11.1'
+    download = true
+    nodeProjectDir = file('src/main/resources/uaa-fe')
+}
+
+tasks.register('copyAngularApp', Copy) {
+    dependsOn('npm_run_build')
+    from("${projectDir}/src/main/resources/uaa-fe/dist/uaa-fe/browser")
+    into "${project.projectDir}/src/main/resources/static"
+}
+
+tasks.named('processResources') {
+    dependsOn(tasks.named('copyAngularApp'))
+    exclude 'uaa-fe/**'
+}
+
+tasks.named('clean') {
+    delete "${project.projectDir}/src/main/resources/static"
+}

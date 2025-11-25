@@ -6,7 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin/roles")
+@RequestMapping("/api/v1/admin/roles")
 public class AdminRoleController {
     private final RoleRepository repo;
 
