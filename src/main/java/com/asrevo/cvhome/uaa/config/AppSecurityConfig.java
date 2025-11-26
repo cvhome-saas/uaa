@@ -32,7 +32,7 @@ public class AppSecurityConfig {
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/v1/admin/**").hasAnyAuthority("SCOPE_super_admin", "ROLE_SUPER_ADMIN")
                         .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
+                .formLogin(it->it.loginPage("/login"))
                 .csrf(AbstractHttpConfigurer::disable)
                 .requestCache(cache -> cache.requestCache(requestCache()))
 
