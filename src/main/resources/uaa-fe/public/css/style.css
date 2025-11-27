@@ -382,7 +382,7 @@ img {
 }
 
 .ptb_50 {
-  padding: 50px 0;
+  padding: 1rem 0;
 }
 
 .ptb_100 {
@@ -1329,7 +1329,7 @@ img {
 :: 8.0 WELCOME AREA CSS
 ****************************** */
 .welcome-area {
-  height: 800px;
+  height: 60vh;
   z-index: 1;
 }
 
@@ -2589,7 +2589,6 @@ img {
 }
 
 .contact-box button {
-  height: 60px;
   border-radius: 8px;
   background: var(--primary-color-2) !important;
 }
