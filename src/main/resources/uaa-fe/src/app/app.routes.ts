@@ -4,5 +4,9 @@ export const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./pages/public/public.module').then(m => m.PublicModule)
+  },
+  {
+    path: '',
+    loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule)
   }
 ];
