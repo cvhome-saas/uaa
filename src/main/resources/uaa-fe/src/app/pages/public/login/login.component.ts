@@ -1,16 +1,18 @@
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {ShapeComponent} from '../componants/shape/shape.component';
 
 @Component({
   selector: 'app-login',
-  imports: [
-    ReactiveFormsModule
-  ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  imports: [
+    ReactiveFormsModule,
+    ShapeComponent
+  ],
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  title: string = 'Login';
+
   contactForm = new FormGroup({
     username: new FormControl(''),
     password: new FormControl('')
