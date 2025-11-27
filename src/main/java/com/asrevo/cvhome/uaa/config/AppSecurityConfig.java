@@ -26,7 +26,7 @@ public class AppSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/.well-known/**").permitAll()
                         .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
-                        .requestMatchers("/", "/index.html", "/login", "/client-login", "/*.css", "/*.js", "/favicon.ico", "/api/v1/me").permitAll()
+                        .requestMatchers("/", "/index.html", "/login", "/client-login","/img/**","/webfonts/**","/js/**","/css/**", "/*.css", "/*.js", "/favicon.ico", "/api/v1/me").permitAll()
                         .requestMatchers("/swagger-ui.html").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
