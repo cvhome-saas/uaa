@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {ClientsRoutingModule} from './clients-routing.module';
 import {SharedModule} from '../shared/shared.module';
+import { AgGridModule } from 'ag-grid-angular';
 
 
 
@@ -10,7 +11,8 @@ import {SharedModule} from '../shared/shared.module';
   imports: [
     CommonModule,
     SharedModule,
-    ClientsRoutingModule
+    ClientsRoutingModule,
+    AgGridModule
   ]
 })
 export class ClientsModule { }

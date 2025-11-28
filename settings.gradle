@@ -1,1 +1,2 @@
 rootProject.name = 'uaa'
+include 'uaa-fe'

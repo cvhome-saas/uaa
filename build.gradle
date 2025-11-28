@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.6'
     id 'io.spring.dependency-management' version '1.1.7'
-    id 'com.github.node-gradle.node' version '7.1.0'
+    id 'com.github.node-gradle.node' version '7.0.2'
 }
 
 group = 'com.asrevo'
@@ -64,22 +64,32 @@ tasks.named('test') {
 }
 
 node {
-    version = '23.8.0'
+    version = '20.11.0'
+    npmVersion = '10.2.4'
     download = true
-    nodeProjectDir = file('src/main/resources/uaa-fe')
 }
 
-tasks.register('copyAngularApp', Copy) {
-    dependsOn('npm_run_build')
-    from("${projectDir}/src/main/resources/uaa-fe/dist/uaa-fe/browser")
-    into "${project.projectDir}/src/main/resources/static"
+// Configure the automatically created npmInstall task
+tasks.named('npmInstall', com.github.gradle.node.npm.task.NpmTask) {
+    workingDir = file('uaa-fe')
 }
 
-tasks.named('processResources') {
-    dependsOn(tasks.named('copyAngularApp'))
-    exclude 'uaa-fe/**'
+// Create a new task to run 'npm run build'
+tasks.register('angularBuild', com.github.gradle.node.npm.task.NpmTask) {
+    dependsOn tasks.named('npmInstall')
+    workingDir = file('uaa-fe')
+    args = ['run', 'build']
 }
 
-tasks.named('clean') {
-    delete "${project.projectDir}/src/main/resources/static"
+tasks.register('npmAgGridInstall', com.github.gradle.node.npm.task.NpmTask) {
+    dependsOn tasks.named('npmInstall')
+    workingDir = file('uaa-fe')
+    args = ['install', 'ag-grid-angular', 'ag-grid-community']
+}
+
+bootJar {
+    dependsOn tasks.named('angularBuild')
+    from ("${projectDir}/uaa-fe/dist/uaa-fe") {
+        into 'static'
+    }
 }
