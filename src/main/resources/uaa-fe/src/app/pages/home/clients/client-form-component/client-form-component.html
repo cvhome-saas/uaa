@@ -1,1 +1,128 @@
-<p>client-form-component works!</p>
+<nb-card>
+  <nb-card-header>OAuth Client Configuration</nb-card-header>
+  <nb-card-body [formGroup]="form">
+
+    <nb-tabset>
+
+      <!-- ===================== GENERAL TAB ===================== -->
+      <nb-tab tabTitle="General">
+        <div class="row">
+          <div class="col-md-6">
+            <label>Client ID</label>
+            <input nbInput fullWidth formControlName="clientId" />
+          </div>
+
+          <div class="col-md-6">
+            <label>Client Name</label>
+            <input nbInput fullWidth formControlName="clientName" />
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <label>Client Issued At</label>
+            <input nbInput fullWidth formControlName="clientIdIssuedAt" />
+          </div>
+        </div>
+      </nb-tab>
+
+      <!-- ===================== AUTH TAB ===================== -->
+      <nb-tab tabTitle="Authentication">
+        <label>Client Authentication Methods</label>
+        <nb-select fullWidth placeholder="Select" multiple formControlName="clientAuthenticationMethods">
+          <nb-option value="client_secret_basic">client_secret_basic</nb-option>
+          <nb-option value="client_secret_post">client_secret_post</nb-option>
+          <nb-option value="none">none</nb-option>
+        </nb-select>
+
+        <label class="mt-3">Authorization Grant Types</label>
+        <nb-select fullWidth multiple formControlName="authorizationGrantTypes">
+          <nb-option value="authorization_code">authorization_code</nb-option>
+          <nb-option value="refresh_token">refresh_token</nb-option>
+          <nb-option value="client_credentials">client_credentials</nb-option>
+        </nb-select>
+      </nb-tab>
+
+      <!-- ===================== REDIRECTS TAB ===================== -->
+      <nb-tab tabTitle="Redirects">
+        <h4>Redirect URIs</h4>
+        <div formArrayName="redirectUris">
+          <div *ngFor="let ctrl of redirectUris.controls; let i = index" [formGroupName]="i" class="row mb-2">
+            <div class="col-md-10">
+              <input nbInput fullWidth formControlName="value" />
+            </div>
+            <div class="col-md-2">
+              <button nbButton status="danger" (click)="removeRedirectUri(i)">-</button>
+            </div>
+          </div>
+          <button nbButton status="success" (click)="addRedirectUri()">+ Add</button>
+        </div>
+
+        <h4 class="mt-4">Post Logout Redirect URIs</h4>
+        <div formArrayName="postLogoutRedirectUris">
+          <div *ngFor="let ctrl of postLogoutRedirectUris.controls; let i = index" [formGroupName]="i" class="row mb-2">
+            <div class="col-md-10">
+              <input nbInput fullWidth formControlName="value" />
+            </div>
+            <div class="col-md-2">
+              <button nbButton status="danger" (click)="removePostLogoutUri(i)">-</button>
+            </div>
+          </div>
+          <button nbButton status="success" (click)="addPostLogoutUri()">+ Add</button>
+        </div>
+      </nb-tab>
+
+      <!-- ===================== SCOPES TAB ===================== -->
+      <nb-tab tabTitle="Scopes">
+        <label>Select Scopes</label>
+        <nb-select multiple fullWidth formControlName="scopes">
+          <nb-option value="openid">openid</nb-option>
+          <nb-option value="profile">profile</nb-option>
+          <nb-option value="api.read">api.read</nb-option>
+        </nb-select>
+      </nb-tab>
+
+      <!-- ===================== SETTINGS TAB ===================== -->
+      <nb-tab tabTitle="Client Settings">
+        <nb-checkbox formControlName="requireProofKey">Require Proof Key</nb-checkbox>
+        <nb-checkbox class="mt-2" formControlName="requireAuthorizationConsent">Authorization Consent Required</nb-checkbox>
+      </nb-tab>
+
+      <!-- ===================== TOKEN SETTINGS TAB ===================== -->
+      <nb-tab tabTitle="Token Settings">
+        <div class="row">
+          <div class="col-md-6">
+            <label>Access Token TTL</label>
+            <input nbInput fullWidth formControlName="accessTokenTimeToLive" />
+          </div>
+
+          <div class="col-md-6">
+            <label>Refresh Token TTL</label>
+            <input nbInput fullWidth formControlName="refreshTokenTimeToLive" />
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <nb-checkbox formControlName="reuseRefreshTokens">Reuse Refresh Tokens</nb-checkbox>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <label>ID Token Algorithm</label>
+            <nb-select fullWidth formControlName="idTokenSignatureAlgorithm">
+              <nb-option value="RS256">RS256</nb-option>
+              <nb-option value="ES256">ES256</nb-option>
+            </nb-select>
+          </div>
+        </div>
+      </nb-tab>
+
+    </nb-tabset>
+
+    <button nbButton status="primary" class="mt-4" (click)="submit()">Save</button>
+
+  </nb-card-body>
+</nb-card>
+

@@ -20,6 +20,7 @@ import {
   NbSelectModule,
   NbSidebarModule,
   NbSpinnerModule,
+  NbTabsetModule,
   NbToastrModule,
   NbUserModule,
   NbWindowModule
@@ -54,6 +55,8 @@ export const MODULES = [
   NbAutocompleteModule,
   NbInputModule,
   NbRouteTabsetModule,
+  NbTabsetModule,
+
 
   FormsModule,
   ReactiveFormsModule,

@@ -1,8 +1,10 @@
 package com.asrevo.cvhome.uaa.service;
 
+import com.asrevo.cvhome.uaa.dto.ClientDetails;
 import com.asrevo.cvhome.uaa.dto.ClientSummary;
 import com.asrevo.cvhome.uaa.dto.CreateClientCommand;
 import com.asrevo.cvhome.uaa.dto.CreatedClient;
+import com.asrevo.cvhome.uaa.mapper.ClientClientDetailsMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Base64;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -160,7 +163,7 @@ public class AdminClientService {
         return updatedRows > 0;
     }
 
-    public RegisteredClient findByClientId(String clientId) {
-        return this.clients.findByClientId(clientId);
+    public ClientDetails findByClientId(String clientId) {
+        return ClientClientDetailsMapper.toClientDetails(Objects.requireNonNull(this.clients.findByClientId(clientId)));
     }
 }

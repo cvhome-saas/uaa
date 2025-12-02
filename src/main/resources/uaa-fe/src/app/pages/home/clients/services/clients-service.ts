@@ -17,7 +17,10 @@ export class ClientsService {
 
   delete(clientId: string): Observable<any> {
     return this.httpClient.delete(`api/v1/admin/clients/${clientId}`);
+  }
 
+  findOne(clientId: string): Observable<any> {
+    return this.httpClient.get(`api/v1/admin/clients/${clientId}`);
   }
 
   getParams(request: PageRequest): HttpParams {

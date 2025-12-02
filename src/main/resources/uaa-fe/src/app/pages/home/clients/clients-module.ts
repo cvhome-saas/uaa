@@ -13,12 +13,13 @@ import {ClientCreateComponent} from './client-create-component/client-create-com
     ClientsListComponent,
     ClientFormComponent,
     ClientEditComponent,
-    ClientCreateComponent
+    ClientCreateComponent,
+    ClientFormComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
-    ClientsRoutingModule
+    ClientsRoutingModule,
   ]
 })
 export class ClientsModule {
