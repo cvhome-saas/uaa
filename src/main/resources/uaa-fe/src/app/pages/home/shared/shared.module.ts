@@ -26,6 +26,7 @@ import {
 } from '@nebular/theme';
 import {TranslateModule} from '@ngx-translate/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 
 export const MODULES = [
   NbLayoutModule,
@@ -55,8 +56,9 @@ export const MODULES = [
   NbRouteTabsetModule,
 
   FormsModule,
-  ReactiveFormsModule
+  ReactiveFormsModule,
 
+  NgxDatatableModule,
 ];
 
 const COMPONENTS: any[] = [];

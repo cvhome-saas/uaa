@@ -1,8 +1,13 @@
 package com.asrevo.cvhome.uaa.service;
 
+import com.asrevo.cvhome.uaa.dto.ClientSummary;
+import com.asrevo.cvhome.uaa.dto.CreateClientCommand;
+import com.asrevo.cvhome.uaa.dto.CreatedClient;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
@@ -22,18 +27,6 @@ import java.util.UUID;
 @Transactional
 public class AdminClientService {
 
-    public record CreateClientCommand(
-        String clientId,
-        String clientName,
-        Set<String> redirectUris,
-        Set<String> scopes,
-        Set<OAuthGrantType> grantTypes,      // standardized enum grant types
-        Set<ClientAuthMethod> authMethods,     // standardized enum client auth methods
-        Boolean requirePkce,
-        Boolean requireConsent
-    ) {}
-
-    public record CreatedClient(String clientId, String clientSecret) {}
 
     private final RegisteredClientRepository clients;
     private final PasswordEncoder encoder;
@@ -128,9 +121,9 @@ public class AdminClientService {
         }
 
         // Apply client settings once with correct PKCE/consent values
-        boolean finalRequirePkce = (hasAuthCode && !needsSecret) || Boolean.TRUE.equals(requirePkce);
+        boolean finalRequirePkce = (hasAuthCode && !needsSecret) || requirePkce;
         cs.requireProofKey(finalRequirePkce);
-        cs.requireAuthorizationConsent(Boolean.TRUE.equals(requireConsent));
+        cs.requireAuthorizationConsent(requireConsent);
         b.clientSettings(cs.build());
 
         RegisteredClient rc = b.build();
@@ -152,18 +145,22 @@ public class AdminClientService {
         return "client-" + UUID.randomUUID().toString().replace("-", "").substring(0, 12);
     }
 
-    // Pagination DTOs and listing
-    public record ClientSummary(String clientId, String clientName) {}
-    public record PagedClients(long total, int page, int size, java.util.List<ClientSummary> items) {}
+    public Page<ClientSummary> listClients(Pageable pageable) {
 
-    public PagedClients listClients(int page, int size) {
-        int p = Math.max(0, page);
-        int s = size <= 0 ? 20 : size;
-        long total = jdbc.queryForObject("select count(*) from oauth2_registered_client", Long.class);
-        int offset = p * s;
+        Long total = jdbc.queryForObject("select count(*) from oauth2_registered_client", Long.class);
         var items = jdbc.query(
             "select client_id, client_name from oauth2_registered_client order by client_id limit ? offset ?",
-            (rs, rowNum) -> new ClientSummary(rs.getString(1), rs.getString(2)), s, offset);
-        return new PagedClients(total, p, s, items);
+            (rs, rowNum) -> new ClientSummary(rs.getString(1), rs.getString(2)), pageable.getPageSize(), pageable.getOffset());
+
+        return new PageImpl<>(items, pageable, total);
+    }
+
+    public boolean delete(String clientId) {
+        int updatedRows = jdbc.update("delete from oauth2_registered_client where client_id=?", clientId);
+        return updatedRows > 0;
+    }
+
+    public RegisteredClient findByClientId(String clientId) {
+        return this.clients.findByClientId(clientId);
     }
 }
