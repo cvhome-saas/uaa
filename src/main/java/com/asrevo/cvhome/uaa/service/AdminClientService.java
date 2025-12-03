@@ -152,18 +152,22 @@ public class AdminClientService {
 
         Long total = jdbc.queryForObject("select count(*) from oauth2_registered_client", Long.class);
         var items = jdbc.query(
-            "select client_id, client_name from oauth2_registered_client order by client_id limit ? offset ?",
-            (rs, rowNum) -> new ClientSummary(rs.getString(1), rs.getString(2)), pageable.getPageSize(), pageable.getOffset());
+            "select id, client_id, client_name from oauth2_registered_client order by id limit ? offset ?",
+            (rs, rowNum) -> new ClientSummary(rs.getString(1), rs.getString(2), rs.getString(3)), pageable.getPageSize(), pageable.getOffset());
 
         return new PageImpl<>(items, pageable, total);
     }
 
-    public boolean delete(String clientId) {
-        int updatedRows = jdbc.update("delete from oauth2_registered_client where client_id=?", clientId);
+    public boolean delete(String id) {
+        int updatedRows = jdbc.update("delete from oauth2_registered_client where id=?", id);
         return updatedRows > 0;
     }
 
-    public ClientDetails findByClientId(String clientId) {
-        return ClientClientDetailsMapper.toClientDetails(Objects.requireNonNull(this.clients.findByClientId(clientId)));
+    public ClientDetails findById(String id) {
+        return ClientClientDetailsMapper.toClientDetails(Objects.requireNonNull(this.clients.findById(id)));
+    }
+    
+    public void save(ClientDetails details){
+        clients.save(ClientClientDetailsMapper.toRegisteredClient(details));
     }
 }

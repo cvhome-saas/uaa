@@ -32,11 +32,11 @@ export class ClientsListComponent extends BaseTable<any> implements OnInit, Afte
   }
 
   protected onEdit(row: ClientSummary) {
-    this.router.navigate(["/home/clients/edit", row.clientId])
+    this.router.navigate(["/home/clients/edit", row.id])
   }
 
   protected onDelete(row: ClientSummary) {
-    this.clientsService.delete(row.clientId).subscribe(it => {
+    this.clientsService.delete(row.id).subscribe(it => {
       this.trigger();
     });
   }

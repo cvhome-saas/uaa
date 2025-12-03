@@ -21,6 +21,13 @@
         class="material"
         rowHeight="auto">
 
+        <ngx-datatable-column name="id">
+          <ng-template let-column="column" ngx-datatable-header-template> {{ 'COMMON.ID' |translate }}</ng-template>
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <strong>{{ value }}</strong>
+          </ng-template>
+        </ngx-datatable-column>
+
         <ngx-datatable-column name="ClientId">
           <ng-template let-column="column" ngx-datatable-header-template> {{ 'COMMON.CLIENT_ID' |translate }}</ng-template>
           <ng-template let-value="value" ngx-datatable-cell-template>

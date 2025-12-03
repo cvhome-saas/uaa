@@ -1,6 +1,7 @@
 package com.asrevo.cvhome.uaa.web.admin;
 
-import com.asrevo.cvhome.uaa.dto.*;
+import com.asrevo.cvhome.uaa.dto.ClientDetails;
+import com.asrevo.cvhome.uaa.dto.ClientSummary;
 import com.asrevo.cvhome.uaa.service.AdminClientService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,12 +18,8 @@ public class AdminClientController {
 
     @PreAuthorize("hasAuthority('SCOPE_super_admin') or hasRole('SUPER_ADMIN')")
     @PostMapping
-    public CreatedClientResponse create(@RequestBody CreateClientRequest req) {
-        var created = service.createClient(new CreateClientCommand(
-                req.clientId(), req.clientName(), req.redirectUris(), req.scopes(),
-                req.grantTypes(), req.authMethods(), req.requirePkce(), req.requireConsent()
-        ));
-        return new CreatedClientResponse(created.clientId(), created.clientSecret());
+    public ClientDetails create(@RequestBody ClientDetails req) {
+        return req;
     }
 
     @PreAuthorize("hasAuthority('SCOPE_super_admin') or hasRole('SUPER_ADMIN')")
@@ -32,14 +29,14 @@ public class AdminClientController {
     }
 
     @PreAuthorize("hasAuthority('SCOPE_super_admin') or hasRole('SUPER_ADMIN')")
-    @GetMapping("{clientId}")
-    public ClientDetails findOne(@PathVariable("clientId") String clientId) {
-        return service.findByClientId(clientId);
+    @GetMapping("{id}")
+    public ClientDetails findOne(@PathVariable("id") String id) {
+        return service.findById(id);
     }
 
     @PreAuthorize("hasAuthority('SCOPE_super_admin') or hasRole('SUPER_ADMIN')")
-    @DeleteMapping("{clientId}")
-    public void delete(@PathVariable("clientId") String clientId) {
-        service.delete(clientId);
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable("id") String id) {
+        service.delete(id);
     }
 }

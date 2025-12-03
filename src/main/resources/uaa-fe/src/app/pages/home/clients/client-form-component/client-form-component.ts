@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {ClientsService} from '../services/clients-service';
 
 @Component({
   selector: 'app-client-form-component',
@@ -10,11 +11,18 @@ import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 export class ClientFormComponent implements OnInit {
   form!: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  // Options for the select inputs
+  clientAuthenticationMethodsOptions = ['client_secret_basic', 'client_secret_post', 'none'];
+  authorizationGrantTypesOptions = ['authorization_code', 'refresh_token', 'client_credentials'];
+  scopesOptions = ['openid', 'profile', 'api.read'];
+  idTokenSignatureAlgorithmOptions = ['RS256', 'ES256'];
+
+  constructor(private fb: FormBuilder,private clientsService:ClientsService) {
   }
 
   ngOnInit(): void {
     this.form = this.fb.group({
+      id: [''],
       clientId: [''],
       clientIdIssuedAt: [''],
       clientName: [''],
@@ -43,10 +51,14 @@ export class ClientFormComponent implements OnInit {
     this.form.patchValue(v);
 
     this.redirectUris.clear();
-    (v.redirectUris || []).forEach((x: string) => this.redirectUris.push(this.fb.group({value: x})));
+    (v.redirectUris || []).forEach((x: string) => this.redirectUris.push(this.createUriGroup(x)));
 
     this.postLogoutRedirectUris.clear();
-    (v.postLogoutRedirectUris || []).forEach((x: string) => this.postLogoutRedirectUris.push(this.fb.group({value: x})));
+    (v.postLogoutRedirectUris || []).forEach((x: string) => this.postLogoutRedirectUris.push(this.createUriGroup(x)));
+  }
+
+  createUriGroup(value: string = ''): FormGroup {
+    return this.fb.group({ value });
   }
 
   get redirectUris() {
@@ -58,7 +70,7 @@ export class ClientFormComponent implements OnInit {
   }
 
   addRedirectUri() {
-    this.redirectUris.push(this.fb.group({value: ''}));
+    this.redirectUris.push(this.createUriGroup());
   }
 
   removeRedirectUri(i: number) {
@@ -66,7 +78,7 @@ export class ClientFormComponent implements OnInit {
   }
 
   addPostLogoutUri() {
-    this.postLogoutRedirectUris.push(this.fb.group({value: ''}));
+    this.postLogoutRedirectUris.push(this.createUriGroup());
   }
 
   removePostLogoutUri(i: number) {
@@ -74,6 +86,6 @@ export class ClientFormComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.form.value);
+    this.clientsService.save(this.form.value).subscribe();
   }
 }

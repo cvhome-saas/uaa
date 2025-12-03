@@ -27,9 +27,13 @@ export class ClientsService {
     return new HttpParams({fromObject: {...request}});
   }
 
+  save(value: any) {
+    return this.httpClient.post(`api/v1/admin/clients`,value);
+  }
 }
 
 export interface ClientSummary {
+  id: string
   clientId: string
   clientName: string
 }
