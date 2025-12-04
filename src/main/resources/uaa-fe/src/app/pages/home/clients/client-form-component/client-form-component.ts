@@ -19,7 +19,7 @@ export class ClientFormComponent implements OnInit {
   tokenEndpointAuthenticationSigningAlgorithmOptions = ['RS256', 'ES256'];
   accessTokenFormatOptions = ['self-contained', 'reference'];
 
-  constructor(private fb: FormBuilder,private clientsService:ClientsService) {
+  constructor(private fb: FormBuilder, private clientsService: ClientsService) {
   }
 
   ngOnInit(): void {
@@ -54,7 +54,9 @@ export class ClientFormComponent implements OnInit {
         authorizationCodeTimeToLive: ['PT24H'],
         deviceCodeTimeToLive: ['PT5M'],
         x509CertificateBoundAccessTokens: [false],
-        accessTokenFormat: ['self-contained'],
+        accessTokenFormat: this.fb.group({
+          value: ['self-contained']
+        }),
       })
     });
   }

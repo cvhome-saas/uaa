@@ -170,9 +170,9 @@
               <nb-option *ngFor="let alg of idTokenSignatureAlgorithmOptions" [value]="alg">{{ alg }}</nb-option>
             </nb-select>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6" formGroupName="accessTokenFormat">
             <label>Access Token Format</label>
-            <nb-select fullWidth formControlName="accessTokenFormat">
+            <nb-select fullWidth formControlName="value">
               <nb-option *ngFor="let format of accessTokenFormatOptions" [value]="format">{{ format }}</nb-option>
             </nb-select>
           </div>
