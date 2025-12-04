@@ -16,16 +16,18 @@ export class ClientFormComponent implements OnInit {
   authorizationGrantTypesOptions = ['authorization_code', 'refresh_token', 'client_credentials'];
   scopesOptions = ['openid', 'profile', 'api.read'];
   idTokenSignatureAlgorithmOptions = ['RS256', 'ES256'];
+  tokenEndpointAuthenticationSigningAlgorithmOptions = ['RS256', 'ES256'];
+  accessTokenFormatOptions = ['self-contained', 'reference'];
 
   constructor(private fb: FormBuilder,private clientsService:ClientsService) {
   }
 
   ngOnInit(): void {
-    console.log("ashraf")
     this.form = this.fb.group({
       id: [''],
       clientId: [''],
       clientIdIssuedAt: [''],
+      clientSecretExpiresAt: [''],
       clientName: [''],
 
       clientAuthenticationMethods: [[]],
@@ -36,13 +38,24 @@ export class ClientFormComponent implements OnInit {
 
       scopes: [[]],
 
-      requireProofKey: [false],
-      requireAuthorizationConsent: [true],
+      clientSettings: this.fb.group({
+        requireProofKey: [false],
+        requireAuthorizationConsent: [true],
+        jwkSetUrl: [''],
+        tokenEndpointAuthenticationSigningAlgorithm: [''],
+        x509CertificateSubjectDN: [''],
+      }),
 
-      accessTokenTimeToLive: [''],
-      refreshTokenTimeToLive: [''],
-      reuseRefreshTokens: [false],
-      idTokenSignatureAlgorithm: ['RS256'],
+      tokenSettings: this.fb.group({
+        accessTokenTimeToLive: [''],
+        refreshTokenTimeToLive: [''],
+        reuseRefreshTokens: [false],
+        idTokenSignatureAlgorithm: ['RS256'],
+        authorizationCodeTimeToLive: ['PT24H'],
+        deviceCodeTimeToLive: ['PT5M'],
+        x509CertificateBoundAccessTokens: [false],
+        accessTokenFormat: ['self-contained'],
+      })
     });
   }
 
