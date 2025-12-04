@@ -54,16 +54,11 @@ export class ClientFormComponent implements OnInit {
     this.redirectUris.clear();
     (v.redirectUris || []).forEach((x: string) => this.redirectUris.push(this.createControl(x)));
 
-    // this.postLogoutRedirectUris.clear();
-    // (v.postLogoutRedirectUris || []).forEach((x: string) => this.postLogoutRedirectUris.push(this.createUriGroup(x)));
-  }
-
-  createUriGroup(value: string = ''): FormGroup {
-    return this.fb.group({ value });
+    this.postLogoutRedirectUris.clear();
+    (v.postLogoutRedirectUris || []).forEach((x: string) => this.postLogoutRedirectUris.push(this.createControl(x)));
   }
 
   createControl(value: string = ''): FormControl {
-    console.log(value, 'Ahmed')
     return this.fb.control(value);
   }
 
@@ -76,7 +71,6 @@ export class ClientFormComponent implements OnInit {
   }
 
   addRedirectUri() {
-    console.log(this.redirectUris)
     this.redirectUris.push(this.createControl(''));
   }
 
@@ -85,7 +79,7 @@ export class ClientFormComponent implements OnInit {
   }
 
   addPostLogoutUri() {
-    this.postLogoutRedirectUris.push(this.createUriGroup());
+    this.postLogoutRedirectUris.push(this.createControl());
   }
 
   removePostLogoutUri(i: number) {
