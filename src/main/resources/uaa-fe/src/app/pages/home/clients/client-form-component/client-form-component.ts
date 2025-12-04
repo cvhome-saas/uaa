@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {ClientsService} from '../services/clients-service';
 
 @Component({
@@ -21,6 +21,7 @@ export class ClientFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log("ashraf")
     this.form = this.fb.group({
       id: [''],
       clientId: [''],
@@ -51,14 +52,19 @@ export class ClientFormComponent implements OnInit {
     this.form.patchValue(v);
 
     this.redirectUris.clear();
-    (v.redirectUris || []).forEach((x: string) => this.redirectUris.push(this.createUriGroup(x)));
+    (v.redirectUris || []).forEach((x: string) => this.redirectUris.push(this.createControl(x)));
 
-    this.postLogoutRedirectUris.clear();
-    (v.postLogoutRedirectUris || []).forEach((x: string) => this.postLogoutRedirectUris.push(this.createUriGroup(x)));
+    // this.postLogoutRedirectUris.clear();
+    // (v.postLogoutRedirectUris || []).forEach((x: string) => this.postLogoutRedirectUris.push(this.createUriGroup(x)));
   }
 
   createUriGroup(value: string = ''): FormGroup {
     return this.fb.group({ value });
+  }
+
+  createControl(value: string = ''): FormControl {
+    console.log(value, 'Ahmed')
+    return this.fb.control(value);
   }
 
   get redirectUris() {
@@ -70,7 +76,8 @@ export class ClientFormComponent implements OnInit {
   }
 
   addRedirectUri() {
-    this.redirectUris.push(this.createUriGroup());
+    console.log(this.redirectUris)
+    this.redirectUris.push(this.createControl(''));
   }
 
   removeRedirectUri(i: number) {
@@ -86,6 +93,7 @@ export class ClientFormComponent implements OnInit {
   }
 
   submit() {
+    console.log(this.form.value)
     this.clientsService.save(this.form.value).subscribe();
   }
 }

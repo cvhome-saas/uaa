@@ -58,9 +58,9 @@
           </button>
         </div>
         <div formArrayName="redirectUris">
-          <div *ngFor="let ctrl of redirectUris.controls; let i = index" [formGroupName]="i" class="row mb-2">
+          <div *ngFor="let ctrl of redirectUris.controls; let i = index" class="row mb-2">
             <div class="col-md-11">
-              <input nbInput fullWidth formControlName="value" />
+              <input nbInput fullWidth [formControlName]="i" />
             </div>
             <div class="col-md-1">
               <button nbButton ghost status="danger" (click)="removeRedirectUri(i)" [disabled]="redirectUris.length === 1">
@@ -79,7 +79,7 @@
         <div formArrayName="postLogoutRedirectUris">
           <div *ngFor="let ctrl of postLogoutRedirectUris.controls; let i = index" [formGroupName]="i" class="row mb-2">
             <div class="col-md-11">
-              <input nbInput fullWidth formControlName="value" />
+              <input nbInput fullWidth formControlName="i" />
             </div>
             <div class="col-md-1">
               <button nbButton ghost status="danger" (click)="removePostLogoutUri(i)" [disabled]="postLogoutRedirectUris.length === 1">
