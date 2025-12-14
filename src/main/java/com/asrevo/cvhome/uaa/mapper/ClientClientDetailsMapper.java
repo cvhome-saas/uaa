@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ClientClientDetailsMapper {
-    
+
     public static ClientDetails toClientDetails(RegisteredClient client) {
         Set<ClientAuthMethod> clientAuthenticationMethods = client.getClientAuthenticationMethods()
                 .stream()

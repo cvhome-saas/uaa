@@ -28,30 +28,30 @@ public class AdminUserController {
     @PostMapping
     public UserDto create(@RequestBody CreateUserRequest req) {
         User u = adminService.createUser(
-            req.username(),
-            req.email(),
-            req.password(),
-            Optional.ofNullable(req.roles()).orElse(Set.of())
+                req.username(),
+                req.email(),
+                req.password(),
+                Optional.ofNullable(req.roles()).orElse(Set.of())
         );
         return new UserDto(u.getId(), u.getUsername(), u.getEmail(), u.getRoles().stream().map(Role::getName).collect(toSet()));
     }
 
     @PreAuthorize("hasAuthority('SCOPE_super_admin') or hasRole('SUPER_ADMIN')")
     @PostMapping("/{id}/roles")
-    public void assign(@PathVariable UUID id, @RequestBody Set<String> roles){
+    public void assign(@PathVariable UUID id, @RequestBody Set<String> roles) {
         adminService.assignRoles(id, roles);
     }
 
     @PreAuthorize("hasAuthority('SCOPE_super_admin') or hasRole('SUPER_ADMIN')")
     @PutMapping("/{id}")
-    public UserDto update(@PathVariable UUID id, @RequestBody UpdateUserRequest req){
+    public UserDto update(@PathVariable UUID id, @RequestBody UpdateUserRequest req) {
         User u = adminService.updateUser(id, req.email(), req.password(), req.status());
         return new UserDto(u.getId(), u.getUsername(), u.getEmail(), u.getRoles().stream().map(Role::getName).collect(toSet()));
     }
 
     @PreAuthorize("hasAuthority('SCOPE_super_admin') or hasRole('SUPER_ADMIN')")
     @PostMapping("/{id}/roles/remove")
-    public void removeRoles(@PathVariable UUID id, @RequestBody Set<String> roles){
+    public void removeRoles(@PathVariable UUID id, @RequestBody Set<String> roles) {
         adminService.removeRoles(id, roles);
     }
 }

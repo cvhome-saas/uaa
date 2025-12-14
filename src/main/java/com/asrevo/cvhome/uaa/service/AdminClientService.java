@@ -65,8 +65,8 @@ public class AdminClientService {
 
         String rawSecret = null;
         RegisteredClient.Builder b = RegisteredClient.withId(UUID.randomUUID().toString())
-            .clientId(clientId)
-            .clientName(cmd.clientName());
+                .clientId(clientId)
+                .clientName(cmd.clientName());
 
         // Auth methods
         boolean needsSecret = false;
@@ -74,7 +74,7 @@ public class AdminClientService {
             ClientAuthenticationMethod method = am.toSpring();
             b.clientAuthenticationMethod(method);
             if (ClientAuthenticationMethod.CLIENT_SECRET_BASIC.equals(method)
-                || ClientAuthenticationMethod.CLIENT_SECRET_POST.equals(method)) {
+                    || ClientAuthenticationMethod.CLIENT_SECRET_POST.equals(method)) {
                 needsSecret = true;
             }
         }
@@ -111,8 +111,8 @@ public class AdminClientService {
 
         // Scopes
         Set<String> defaultScopes = (hasClientCreds && !(hasAuthCode || hasRefresh))
-            ? Set.of("api.read", "api.write")
-            : Set.of(OidcScopes.OPENID, "profile");
+                ? Set.of("api.read", "api.write")
+                : Set.of(OidcScopes.OPENID, "profile");
         scopesOrDefault(cmd.scopes(), defaultScopes).stream().distinct().forEach(b::scope);
 
         // Redirect URIs for code flow
@@ -152,8 +152,8 @@ public class AdminClientService {
 
         Long total = jdbc.queryForObject("select count(*) from oauth2_registered_client", Long.class);
         var items = jdbc.query(
-            "select id, client_id, client_name from oauth2_registered_client order by id limit ? offset ?",
-            (rs, rowNum) -> new ClientSummary(rs.getString(1), rs.getString(2), rs.getString(3)), pageable.getPageSize(), pageable.getOffset());
+                "select id, client_id, client_name from oauth2_registered_client order by id limit ? offset ?",
+                (rs, rowNum) -> new ClientSummary(rs.getString(1), rs.getString(2), rs.getString(3)), pageable.getPageSize(), pageable.getOffset());
 
         return new PageImpl<>(items, pageable, total);
     }
@@ -166,8 +166,8 @@ public class AdminClientService {
     public ClientDetails findById(String id) {
         return ClientClientDetailsMapper.toClientDetails(Objects.requireNonNull(this.clients.findById(id)));
     }
-    
-    public void save(ClientDetails details){
+
+    public void save(ClientDetails details) {
         clients.save(ClientClientDetailsMapper.toRegisteredClient(details));
     }
 }

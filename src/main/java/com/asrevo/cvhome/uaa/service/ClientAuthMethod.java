@@ -20,11 +20,6 @@ public enum ClientAuthMethod {
         this.asSpring = asSpring;
     }
 
-    @JsonValue
-    public String value() { return value; }
-
-    public ClientAuthenticationMethod toSpring() { return asSpring; }
-
     @JsonCreator
     public static ClientAuthMethod from(String s) {
         if (s == null) throw new IllegalArgumentException("Auth method cannot be null");
@@ -34,5 +29,14 @@ public enum ClientAuthMethod {
             case "none" -> NONE;
             default -> throw new IllegalArgumentException("Unknown client auth method: " + s);
         };
+    }
+
+    @JsonValue
+    public String value() {
+        return value;
+    }
+
+    public ClientAuthenticationMethod toSpring() {
+        return asSpring;
     }
 }

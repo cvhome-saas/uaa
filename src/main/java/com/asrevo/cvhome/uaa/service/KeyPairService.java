@@ -2,11 +2,10 @@ package com.asrevo.cvhome.uaa.service;
 
 import com.asrevo.cvhome.uaa.domain.SigningKey;
 import com.asrevo.cvhome.uaa.repo.SigningKeyRepository;
+import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.JWK;
-import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.KeyUse;
 import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jose.JWSAlgorithm;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +41,8 @@ public class KeyPairService {
         repo.findTop5ByOrderByCreatedAtDesc().forEach(sk -> {
             try {
                 result.add(JWK.parse(sk.getJwkJson()));
-            } catch (Exception ignored) { }
+            } catch (Exception ignored) {
+            }
         });
         return result;
     }
@@ -65,11 +65,11 @@ public class KeyPairService {
             kpg.initialize(2048);
             KeyPair kp = kpg.generateKeyPair();
             return new RSAKey.Builder((RSAPublicKey) kp.getPublic())
-                .privateKey(kp.getPrivate())
-                .keyUse(KeyUse.SIGNATURE)
-                .algorithm(JWSAlgorithm.RS256)
-                .keyIDFromThumbprint()
-                .build();
+                    .privateKey(kp.getPrivate())
+                    .keyUse(KeyUse.SIGNATURE)
+                    .algorithm(JWSAlgorithm.RS256)
+                    .keyIDFromThumbprint()
+                    .build();
         } catch (Exception e) {
             throw new IllegalStateException("Failed to generate RSA key", e);
         }

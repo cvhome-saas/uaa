@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -18,8 +16,10 @@ public class Role {
 
     @Column(nullable = false, unique = true, length = 80)
     private String name;
-    
-    public Role(String name) { this.name = name; }
+
+    public Role(String name) {
+        this.name = name;
+    }
 
     @PrePersist
     public void prePersist() {

@@ -20,11 +20,6 @@ public enum OAuthGrantType {
         this.asSpring = asSpring;
     }
 
-    @JsonValue
-    public String value() { return value; }
-
-    public AuthorizationGrantType toSpring() { return asSpring; }
-
     @JsonCreator
     public static OAuthGrantType from(String s) {
         if (s == null) throw new IllegalArgumentException("Grant type cannot be null");
@@ -34,8 +29,17 @@ public enum OAuthGrantType {
             case "refresh_token" -> REFRESH_TOKEN;
             case "implicit" -> throw new IllegalArgumentException("Unsupported grant type: implicit");
             case "password", "resource_owner_password_credentials" ->
-                throw new IllegalArgumentException("Unsupported grant type: password");
+                    throw new IllegalArgumentException("Unsupported grant type: password");
             default -> throw new IllegalArgumentException("Unknown grant type: " + s);
         };
+    }
+
+    @JsonValue
+    public String value() {
+        return value;
+    }
+
+    public AuthorizationGrantType toSpring() {
+        return asSpring;
     }
 }

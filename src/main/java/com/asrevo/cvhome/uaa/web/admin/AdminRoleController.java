@@ -3,7 +3,10 @@ package com.asrevo.cvhome.uaa.web.admin;
 import com.asrevo.cvhome.uaa.domain.Role;
 import com.asrevo.cvhome.uaa.repo.RoleRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/admin/roles")
@@ -16,7 +19,7 @@ public class AdminRoleController {
 
     @PreAuthorize("hasAuthority('SCOPE_super_admin') or hasRole('SUPER_ADMIN')")
     @PostMapping
-    public Role create(@RequestParam String name){
+    public Role create(@RequestParam String name) {
         return repo.save(new Role(name));
     }
 }

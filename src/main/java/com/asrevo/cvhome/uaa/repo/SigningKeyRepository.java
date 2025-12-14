@@ -9,6 +9,8 @@ import java.util.UUID;
 
 public interface SigningKeyRepository extends JpaRepository<SigningKey, UUID> {
     Optional<SigningKey> findFirstByActiveTrueOrderByCreatedAtDesc();
+
     List<SigningKey> findTop5ByOrderByCreatedAtDesc();
+
     Optional<SigningKey> findByKid(String kid);
 }
