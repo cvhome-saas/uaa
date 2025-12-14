@@ -41,10 +41,6 @@ public class JwtCustomizerConfig {
                     if (!roles.isEmpty()) {
                         context.getClaims().claim("roles", roles);
                     }
-                    Set<String> perms = clientRoles.getClientPermissionNames(clientId);
-                    if (!perms.isEmpty()) {
-                        context.getClaims().claim("perms", perms);
-                    }
                     // make client_id explicit for resource servers
                     context.getClaims().claim("client_id", clientId);
                 }
@@ -64,14 +60,6 @@ public class JwtCustomizerConfig {
         Set<String> roles = user.getRoles().stream().map(Role::getName).collect(Collectors.toSet());
         if (!roles.isEmpty()) {
             context.getClaims().claim("roles", roles);
-        }
-        // permissions aggregated from roles
-        Set<String> perms = user.getRoles().stream()
-            .flatMap(r -> r.getPermissions().stream())
-            .map(p -> p.getName())
-            .collect(Collectors.toSet());
-        if (!perms.isEmpty()) {
-            context.getClaims().claim("perms", perms);
         }
     }
 }

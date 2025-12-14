@@ -1,1 +1,52 @@
 http://localhost:8080/oauth2/authorize?response_type=code&client_id=webapp&redirect_uri=https://app.example.com/callback&scope=openid%20profile%20api.read&code_challenge=YOUR_CODE_CHALLENGE&code_challenge_method=S256
+
+
+
+
+### create a client
+POST localhost:8080/api/v1/admin/clients
+Content-Type: application/json
+
+{
+  "id": "66666666-6666-6666-6666-666666666666",
+  "clientId": "webapp",
+  "clientIdIssuedAt": "2025-12-04T18:46:01.222677Z",
+  "clientSecretExpiresAt": "2025-12-04T18:46:01.222677Z",
+  "clientName": "Web App",
+  "clientAuthenticationMethods": [
+    "client_secret_basic",
+    "client_secret_post"
+  ],
+  "authorizationGrantTypes": [
+    "authorization_code",
+    "refresh_token"
+  ],
+  "redirectUris": [
+    "https://app.example.com/callback"
+  ],
+  "postLogoutRedirectUris": [
+    "naitaing"
+  ],
+  "scopes": [
+    "openid",
+    "profile",
+    "api.read"
+  ],
+  "clientSettings": {
+    "requireProofKey": true,
+    "requireAuthorizationConsent": true,
+    "jwkSetUrl": "gogole.com",
+    "tokenEndpointAuthenticationSigningAlgorithm": "RS256",
+    "x509CertificateSubjectDN": "domain.example"
+  },
+  "tokenSettings": {
+    "accessTokenTimeToLive": "PT24H",
+    "refreshTokenTimeToLive": "PT20H",
+    "reuseRefreshTokens": true,
+    "idTokenSignatureAlgorithm": "RS256",
+    "authorizationCodeTimeToLive": "PT24H",
+    "deviceCodeTimeToLive": "PT5M",
+    "x509CertificateBoundAccessTokens": true,
+    "accessTokenFormat": "self-contained"
+  }
+}
